@@ -1,37 +1,40 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
-/* Colores de `paleta de colores, Claro, Oscuro.md` v1.0 (extraídos de los logos). */
+/*
+ * Colores de marca de `paleta de colores, Claro, Oscuro.md` (rojo y dorado del logo),
+ * con neutros cálidos de papel washi y tinta sumi para la landing.
+ */
 @theme {
   --color-brand: #d8001d;
-  --color-brand-soft: #fce8eb;
   --color-gold: #886f3b;
   --color-gold-strong: #735a2d;
-  --color-gold-soft: #f4ebd9;
-  --color-ink: #1f2328;
-  --color-ink-soft: #5e6570;
-  --color-paper: #fafaf9;
-  --color-surface: #ffffff;
-  --color-line: #e3e5e8;
-  --color-line-strong: #858d98;
+  --color-gold-soft: #e9dfc9;
+  --color-paper: #f5f1ea;
+  --color-paper-deep: #ece6db;
+  --color-surface: #fbf9f5;
+  --color-ink: #1a1814;
+  --color-ink-soft: #5b564e;
+  --color-line: #d9d2c5;
 
-  /* Nombres que esperan los componentes de shadcn (menú móvil de Sketcher UI). */
-  --color-background: #ffffff;
-  --color-foreground: #1f2328;
-  --color-muted: #f4ebd9;
-  --color-muted-foreground: #5e6570;
+  /* Nombres que esperan los componentes de shadcn (Sketcher UI, Space UI). */
+  --color-background: #f5f1ea;
+  --color-foreground: #1a1814;
+  --color-muted: #ece6db;
+  --color-muted-foreground: #5b564e;
   --color-primary: #d8001d;
-  --color-border: #e3e5e8;
+  --color-border: #d9d2c5;
 
   --font-serif: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
   --font-sans: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
 
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 @layer base {
   html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 6rem;
   }
 
   body {
@@ -43,31 +46,104 @@
   }
 
   ::selection {
-    background: var(--color-brand-soft);
-    color: var(--color-ink);
+    background: var(--color-brand);
+    color: #fff;
   }
 
-  /* Anillo de foco dorado, 3:1 o más sobre fondos claros (WCAG 2.4.7, 2.4.13). */
+  /* Anillo de foco dorado (WCAG 2.4.7, 2.4.13). En secciones oscuras se aclara. */
   :focus-visible {
     outline: 3px solid var(--color-gold);
-    outline-offset: 3px;
-    border-radius: 4px;
+    outline-offset: 4px;
+    border-radius: 2px;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
+  .on-ink :focus-visible {
+    outline-color: var(--color-gold-soft);
   }
 }
 
-/* Lo que anime.js revela al hacer scroll. Sin JS o con movimiento reducido se queda visible. */
-.js-motion :is([data-reveal], [data-hero-item], [data-hero-emblem]) {
+@layer components {
+  /* Etiqueta pequeña de sección. */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* Subrayado que crece al pasar el cursor. */
+  .link-line {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 0.6s var(--ease-out-expo);
+  }
+
+  .link-line:hover {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
+
+  /* Kanji con solo contorno, para la marquesina. */
+  .kanji-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--color-gold);
+  }
+}
+
+/* Grano de papel sobre toda la página. */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Lo que anime.js revela. Sin JS o con movimiento reducido queda visible. */
+.js-motion :is([data-reveal], [data-hero-fade], [data-hero-emblem]) {
   opacity: 0;
 }
 
+.js-motion [data-line] {
+  transform: translateY(105%);
+}
+
+/* La intro se quita sola aunque falle el JS. */
+[data-intro] {
+  animation: intro-failsafe 0s linear 4s forwards;
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes intro-failsafe {
+  to {
+    visibility: hidden;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .js-motion :is([data-reveal], [data-hero-item], [data-hero-emblem]) {
+  .js-motion :is([data-reveal], [data-hero-fade], [data-hero-emblem]) {
     opacity: 1;
+  }
+
+  .js-motion [data-line] {
+    transform: none;
+  }
+
+  [data-intro] {
+    display: none;
   }
 }

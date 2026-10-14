@@ -6,10 +6,14 @@ Sitio de una sola página para la solicitud de exención de cuota del Apple Deve
 
 - Astro 7 (HTML estático) + Tailwind CSS v4
 - Islas de React solo donde hace falta:
-  - Texto con desenfoque del proverbio: Space UI, `blur-reveal-text`
+  - Intro de saludos: adaptada de "Words Preloader" de Space UI
+  - Manifiesto que se revela con el scroll: Space UI, `scroll-text-reveal`
+  - Kanji del proverbio con desenfoque: Space UI, `blur-reveal-text`
+  - Tarjetas apiladas de actividades: adaptadas de "Sticky Scroll Cards" de Componentry
+  - Líneas de fondo del inicio: Kokonut UI, `background-paths`
   - Menú móvil: Sketcher UI, `expandable-mobile-nav`
 - Botones "slide text" de Kokonut UI, pasados a Astro (solo CSS)
-- Animaciones: anime.js (entradas y scroll) y Motion (componentes de React)
+- Animaciones: anime.js (entradas, marquesina y giros con el scroll), Motion (componentes de React) y Lenis (scroll suave)
 - Tipografías: Shippori Mincho y Zen Kaku Gothic New (Fontsource, sin Google Fonts)
 
 Con "reducir movimiento" activado en el sistema, las animaciones se apagan.

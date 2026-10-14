@@ -1,29 +1,29 @@
 ---
 import { Image } from 'astro:assets'
-import SlideButton from './SlideButton.astro'
 import { links, sections } from '@/data/site'
 import emblema from '@/assets/logos/emblema.png'
 ---
 
 <header
   data-header
-  class="sticky top-0 z-30 border-b border-transparent bg-paper/85 backdrop-blur-md transition-colors duration-300 data-[scrolled]:border-line"
+  class="fixed inset-x-0 top-0 z-40 border-b border-transparent transition-[background-color,border-color] duration-500 data-[scrolled]:border-ink/10 data-[scrolled]:bg-paper"
 >
-  <div class="mx-auto flex h-18 max-w-6xl items-center justify-between gap-6 px-6">
+  <div class="mx-auto flex h-20 max-w-[90rem] items-center justify-between gap-6 px-6 md:px-10">
     <a href="#" class="flex items-center gap-3" aria-label="Centro Cultural Japonés de Ensenada, A.C., ir al inicio">
-      <Image src={emblema} alt="" widths={[48, 96]} sizes="44px" class="size-11" loading="eager" />
-      <span class="font-serif text-[15px] leading-tight text-ink">
+      <Image src={emblema} alt="" widths={[40, 80]} sizes="36px" class="size-9" loading="eager" />
+      <span class="font-serif text-[14px] leading-[1.25] text-ink">
         Centro Cultural Japonés<br />de Ensenada, A.C.
       </span>
     </a>
 
-    <nav aria-label="Secciones" class="hidden md:block">
-      <ul class="flex items-center gap-7 text-[15px] text-ink-soft">
+    <nav aria-label="Secciones" class="hidden lg:block">
+      <ul class="flex items-center gap-9 text-[14px] text-ink">
         {
           sections.map((section) => (
             <li>
-              <a href={`#${section.id}`} class="py-2 transition-colors hover:text-ink">
+              <a href={`#${section.id}`} class="group relative py-2">
                 {section.label}
+                <span class="absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-ink transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100" />
               </a>
             </li>
           ))
@@ -31,19 +31,21 @@ import emblema from '@/assets/logos/emblema.png'
       </ul>
     </nav>
 
-    <SlideButton
+    <a
       href={links.whatsapp}
-      text="Pedir informes"
-      hoverText="WhatsApp"
-      external
-      class="hidden min-h-11 px-5 text-[15px] md:inline-flex"
-    />
+      target="_blank"
+      rel="noopener noreferrer"
+      class="hidden min-h-11 items-center gap-2 rounded-full border border-ink px-5 text-[14px] text-ink transition-colors duration-300 hover:bg-ink hover:text-paper md:inline-flex"
+    >
+      <span class="size-1.5 rounded-full bg-brand"></span>
+      Pedir informes<span class="sr-only"> (se abre en otra pestaña)</span>
+    </a>
   </div>
 </header>
 
 <script>
   const header = document.querySelector<HTMLElement>('[data-header]')
-  const update = () => header?.toggleAttribute('data-scrolled', window.scrollY > 8)
+  const update = () => header?.toggleAttribute('data-scrolled', window.scrollY > 24)
   update()
   window.addEventListener('scroll', update, { passive: true })
 </script>
