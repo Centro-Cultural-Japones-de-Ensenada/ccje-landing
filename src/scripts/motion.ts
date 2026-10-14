@@ -93,10 +93,30 @@ function initPage() {
     { rootMargin: '0px 0px -15% 0px' },
   )
   observers.push(observer)
+
+  // Frases que entran palabra por palabra una sola vez (WordReveal).
+  const wordObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue
+        wordObserver.unobserve(entry.target)
+        animate(entry.target.querySelectorAll('[data-word]'), {
+          y: ['110%', '0%'],
+          opacity: [0, 1],
+          duration: 1100,
+          delay: stagger(35),
+          ease: 'outExpo',
+        })
+      }
+    },
+    { rootMargin: '0px 0px -20% 0px' },
+  )
+  observers.push(wordObserver)
   whenUncovered(() => {
     document
       .querySelectorAll('[data-reveal-group], [data-reveal]:not([data-reveal-group] [data-reveal])')
       .forEach((el) => observer.observe(el))
+    document.querySelectorAll('[data-words]').forEach((el) => wordObserver.observe(el))
   })
 
   return () => {

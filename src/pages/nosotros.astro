@@ -3,7 +3,7 @@ import { Image } from 'astro:assets'
 import Layout from '@/layouts/Layout.astro'
 import PageHero from '@/components/site/PageHero.astro'
 import NextPage from '@/components/site/NextPage.astro'
-import { ScrollTextReveal } from '@/components/spaceui/scroll-text-reveal'
+import WordReveal from '@/components/site/WordReveal.astro'
 import kabuki from '@/assets/fotos/kabuki-shishi.jpg'
 ---
 
@@ -18,13 +18,8 @@ import kabuki from '@/assets/fotos/kabuki-shishi.jpg'
     <div class="mx-auto grid max-w-[90rem] gap-10 md:grid-cols-12">
       <p class="eyebrow text-gold-strong md:col-span-3 md:pt-4">Historia</p>
       <div class="md:col-span-9">
-        <ScrollTextReveal
-          client:visible
-          as="p"
-          fromColor="#8a8174"
-          toColor="#1a1814"
-          offset={['start 0.85', 'end 0.5']}
-          className="font-serif text-[clamp(1.85rem,4.3vw,4.25rem)] leading-[1.12] tracking-[-0.02em]"
+        <WordReveal
+          class="font-serif text-[clamp(1.85rem,4.3vw,4.25rem)] leading-[1.12] tracking-[-0.02em] text-ink"
           text="Desde los años treinta somos casa de la comunidad japonesa en Ensenada. Hoy abrimos nuestras puertas a todos para enseñar el idioma y compartir la cultura de Japón."
         />
         <div data-reveal-group class="mt-20 grid max-w-4xl gap-10 text-lg leading-relaxed text-ink-soft md:grid-cols-2">

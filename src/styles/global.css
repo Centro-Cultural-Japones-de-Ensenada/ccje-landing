@@ -105,19 +105,16 @@
   transform: translateY(105%);
 }
 
+.js-motion [data-word] {
+  opacity: 0;
+  transform: translateY(110%);
+}
+
 /* Sin JS la cortina de la intro se quita sola. El script quita esta clase al tomar el control. */
 .curtain-intro {
   animation: intro-failsafe 0s linear 4s forwards;
 }
 
-/* Revelado del manifiesto: una sola variable --p por bloque; cada palabra calcula su color. */
-.str-token {
-  color: color-mix(
-    in oklab,
-    var(--str-to) calc(clamp(0, (var(--p, 0) * var(--n) - var(--i)) / 1.5, 1) * 100%),
-    var(--str-from)
-  );
-}
 
 @keyframes slide {
   from {
@@ -139,7 +136,8 @@
     opacity: 1;
   }
 
-  .js-motion [data-line] {
+  .js-motion :is([data-line], [data-word]) {
+    opacity: 1;
     transform: none;
   }
 
@@ -148,7 +146,4 @@
     display: none;
   }
 
-  .str-token {
-    color: var(--str-to);
-  }
 }

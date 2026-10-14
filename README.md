@@ -7,14 +7,13 @@ Sitio de una sola página para la solicitud de exención de cuota del Apple Deve
 - Astro 7 (HTML estático) + Tailwind CSS v4
 - Islas de React solo donde hace falta:
   - Liquid Glass Social de Sketcher UI para las redes
-  - Manifiesto que se revela con el scroll: Space UI, `scroll-text-reveal`
   - Kanji del proverbio con desenfoque: Space UI, `blur-reveal-text`
   - Tarjetas apiladas de actividades: adaptadas de "Sticky Scroll Cards" de Componentry
   - Líneas de fondo del inicio: Kokonut UI, `background-paths`
   - Menú móvil: Sketcher UI, `expandable-mobile-nav`
 - Botones "slide text" de Kokonut UI, pasados a Astro (solo CSS)
 - Animaciones: anime.js (cortina entre páginas, entradas, marquesina y giros con el scroll), Motion (componentes de React) y Lenis (scroll suave)
-- Seis páginas (`/`, `/nosotros`, `/clases`, `/actividades`, `/escuela`, `/contacto`) con el enrutador de Astro (`ClientRouter`). Al cargar sale la intro de saludos (idea del "Words Preloader" de Space UI) y al cambiar de página sube una cortina con el nombre de la página en japonés: `src/components/site/Curtain.astro`
+- Seis páginas (`/`, `/nosotros`, `/clases`, `/actividades`, `/escuela`, `/contacto`) con el enrutador de Astro (`ClientRouter`). Al cargar sale la intro (palabras en japonés y luego en español; idea del "Words Preloader" de Space UI) y al cambiar de página sube una cortina con el nombre de la página en japonés: `src/components/site/Curtain.astro`
 - Tipografías: Shippori Mincho y Zen Kaku Gothic New (Fontsource, sin Google Fonts)
 
 Con "reducir movimiento" activado en el sistema, las animaciones se apagan.

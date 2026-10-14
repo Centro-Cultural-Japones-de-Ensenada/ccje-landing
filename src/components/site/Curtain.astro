@@ -31,7 +31,8 @@
   import { animate } from 'animejs'
   import { pages } from '@/data/site'
 
-  const WORDS = ['こんにちは', 'Hola', 'ようこそ', 'Bienvenidos']
+  // Primero en japonés y luego las mismas palabras en español, cerrando con "Bienvenidos".
+  const WORDS = ['こんにちは', '日本語', '文化', '仲間', 'ようこそ', 'Hola', 'Japonés', 'Cultura', 'Comunidad', 'Bienvenidos']
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   const curtain = document.querySelector<HTMLElement>('[data-curtain]')!
@@ -76,17 +77,20 @@
   } else {
     w.__curtainCovering = true
     let i = 0
+    const half = WORDS.indexOf('Hola')
     const next = () => {
       i += 1
       if (i < WORDS.length) {
         setWord(WORDS[i])
-        animate(word, { opacity: [0, 1], y: [8, 0], duration: 350, ease: 'outQuad' })
-        window.setTimeout(next, 320)
+        animate(word, { opacity: [0, 1], y: [10, 0], duration: 260, ease: 'outQuad' })
+        // Pausa breve al pasar del japonés al español y al llegar a la última palabra.
+        const wait = i === half - 1 || i === WORDS.length - 1 ? 520 : 210
+        window.setTimeout(next, wait)
       } else {
-        window.setTimeout(lift, 380)
+        lift()
       }
     }
-    window.setTimeout(next, 900)
+    window.setTimeout(next, 750)
   }
 
   // Cambio de página: la cortina sube con el nombre del destino mientras carga la página nueva.

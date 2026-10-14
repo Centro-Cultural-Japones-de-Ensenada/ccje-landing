@@ -1,0 +1,28 @@
+---
+/**
+ * Frase que entra palabra por palabra una sola vez, al aparecer en pantalla (anime.js en motion.ts).
+ * No escucha el scroll, así que no cuesta nada mientras bajas.
+ */
+interface Props {
+  text: string
+  class?: string
+}
+
+const { text, class: className } = Astro.props
+const words = text.trim().split(/\s+/)
+---
+
+<p data-words class={className}>
+  {
+    words.map((word, i) => (
+      <>
+        <span class="inline-block overflow-hidden pb-[0.08em] align-bottom">
+          <span data-word class="inline-block">
+            {word}
+          </span>
+        </span>
+        {i < words.length - 1 ? ' ' : ''}
+      </>
+    ))
+  }
+</p>
