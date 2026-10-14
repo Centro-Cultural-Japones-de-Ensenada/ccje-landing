@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets'
+import SlideButton from './SlideButton.astro'
+import { links, sections } from '@/data/site'
+import emblema from '@/assets/logos/emblema.png'
+---
+
+<header
+  data-header
+  class="sticky top-0 z-30 border-b border-transparent bg-paper/85 backdrop-blur-md transition-colors duration-300 data-[scrolled]:border-line"
+>
+  <div class="mx-auto flex h-18 max-w-6xl items-center justify-between gap-6 px-6">
+    <a href="#" class="flex items-center gap-3" aria-label="Centro Cultural Japonés de Ensenada, A.C., ir al inicio">
+      <Image src={emblema} alt="" widths={[48, 96]} sizes="44px" class="size-11" loading="eager" />
+      <span class="font-serif text-[15px] leading-tight text-ink">
+        Centro Cultural Japonés<br />de Ensenada, A.C.
+      </span>
+    </a>
+
+    <nav aria-label="Secciones" class="hidden md:block">
+      <ul class="flex items-center gap-7 text-[15px] text-ink-soft">
+        {
+          sections.map((section) => (
+            <li>
+              <a href={`#${section.id}`} class="py-2 transition-colors hover:text-ink">
+                {section.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <SlideButton
+      href={links.whatsapp}
+      text="Pedir informes"
+      hoverText="WhatsApp"
+      external
+      class="hidden min-h-11 px-5 text-[15px] md:inline-flex"
+    />
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]')
+  const update = () => header?.toggleAttribute('data-scrolled', window.scrollY > 8)
+  update()
+  window.addEventListener('scroll', update, { passive: true })
+</script>

@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/* Colores de `paleta de colores, Claro, Oscuro.md` v1.0 (extraídos de los logos). */
+@theme {
+  --color-brand: #d8001d;
+  --color-brand-soft: #fce8eb;
+  --color-gold: #886f3b;
+  --color-gold-strong: #735a2d;
+  --color-gold-soft: #f4ebd9;
+  --color-ink: #1f2328;
+  --color-ink-soft: #5e6570;
+  --color-paper: #fafaf9;
+  --color-surface: #ffffff;
+  --color-line: #e3e5e8;
+  --color-line-strong: #858d98;
+
+  /* Nombres que esperan los componentes de shadcn (menú móvil de Sketcher UI). */
+  --color-background: #ffffff;
+  --color-foreground: #1f2328;
+  --color-muted: #f4ebd9;
+  --color-muted-foreground: #5e6570;
+  --color-primary: #d8001d;
+  --color-border: #e3e5e8;
+
+  --font-serif: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-sans: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-brand-soft);
+    color: var(--color-ink);
+  }
+
+  /* Anillo de foco dorado, 3:1 o más sobre fondos claros (WCAG 2.4.7, 2.4.13). */
+  :focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Lo que anime.js revela al hacer scroll. Sin JS o con movimiento reducido se queda visible. */
+.js-motion :is([data-reveal], [data-hero-item], [data-hero-emblem]) {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-motion :is([data-reveal], [data-hero-item], [data-hero-emblem]) {
+    opacity: 1;
+  }
+}

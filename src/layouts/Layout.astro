@@ -1,0 +1,65 @@
+---
+import '@fontsource/shippori-mincho/500.css'
+import '@fontsource/shippori-mincho/700.css'
+import '@fontsource/zen-kaku-gothic-new/400.css'
+import '@fontsource/zen-kaku-gothic-new/500.css'
+import '@fontsource/zen-kaku-gothic-new/700.css'
+import '../styles/global.css'
+import { site } from '@/data/site'
+
+interface Props {
+  title?: string
+  description?: string
+}
+
+const { title = site.legalName, description = site.description } = Astro.props
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': ['EducationalOrganization', 'NGO'],
+  name: site.shortName,
+  legalName: site.legalName,
+  description: site.description,
+  email: site.email,
+  telephone: site.phone.e164,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: `${site.address.street}, ${site.address.neighborhood}`,
+    addressLocality: site.address.city,
+    addressRegion: site.address.region,
+    addressCountry: site.address.country,
+  },
+  sameAs: [site.social.facebook, site.social.youtube],
+}
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#fafaf9" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/og.png" />
+    <script type="application/ld+json" set:html={JSON.stringify(organization)} />
+    <script is:inline>
+      // Marca que hay JS para ocultar lo que anime.js va a revelar; sin JS todo queda visible.
+      document.documentElement.classList.add('js-motion')
+    </script>
+  </head>
+  <body>
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-white"
+      >Saltar al contenido</a
+    >
+    <slot />
+  </body>
+</html>

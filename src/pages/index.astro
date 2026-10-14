@@ -1,0 +1,344 @@
+---
+import { Image } from 'astro:assets'
+import Layout from '@/layouts/Layout.astro'
+import Header from '@/components/site/Header.astro'
+import SlideButton from '@/components/site/SlideButton.astro'
+import MobileNav from '@/components/site/MobileNav'
+import { BlurRevealText } from '@/components/spaceui/blur-reveal-text'
+import { links, site } from '@/data/site'
+import emblema from '@/assets/logos/emblema.png'
+import emblemaBlanco from '@/assets/logos/emblema-blanco.png'
+import noviembreCultural from '@/assets/logos/noviembre-cultural.png'
+import obonMatsuri from '@/assets/logos/obon-matsuri.png'
+
+const courses = [
+  { name: 'Sabatino · Básico 1', schedule: 'Una clase por semana', length: '2 h 30 min por clase' },
+  { name: 'Sabatino · Otros niveles', schedule: 'Una clase por semana', length: '2 h por clase' },
+  { name: 'Curso de kanji', schedule: 'Dos clases por semana', length: '2 h por clase' },
+  { name: 'Semanal', schedule: 'Dos clases por semana', length: '2 h por clase' },
+  { name: 'Intersemestral', schedule: 'Según el grupo y el sensei', length: 'Duración variable' },
+]
+
+const activities = [
+  {
+    title: 'Idioma japonés',
+    text: 'Hiragana, katakana y kanji; caligrafía con tinta y papel de arroz, y lo curioso del idioma: el goroawase (palabras formadas con números), las onomatopeyas, los refranes y los modismos.',
+  },
+  {
+    title: 'Club cultural',
+    text: 'Reuniones abiertas a alumnos y público sobre historia, anime y manga, comida y juegos tradicionales, cine y más.',
+  },
+  {
+    title: 'Entrega de constancias',
+    text: 'Al cerrar el semestre, cada grupo presenta en público lo que aprendió: ensayos, presentaciones, canciones o sketches que los mismos alumnos eligen.',
+  },
+  {
+    title: 'Eventos',
+    text: 'Apoyamos eventos culturales como La Suma de Culturas: Ensenada de Todos, el Mochitsuki, el Hinamatsuri, el Kodomo no Hi y convenciones de anime y manga.',
+  },
+]
+
+const school = [
+  {
+    kanji: '学校',
+    reading: 'gakkō',
+    title: 'Escuela',
+    text: 'Dos salones de clase, baños con lavamanos separados, un acervo bibliográfico y un área al aire libre con bancas para descansar.',
+  },
+  {
+    kanji: '生徒',
+    reading: 'seito',
+    title: 'Estudiantes',
+    text: 'Practican la escritura y la pronunciación en clase y con sus compañeros. Los grupos son pequeños, así la enseñanza es personalizada.',
+  },
+  {
+    kanji: '図書館',
+    reading: 'toshokan',
+    title: 'Biblioteca',
+    text: 'Una hemeroteca con revistas, libros, manga, videos y juegos didácticos para alumnos y profesores.',
+  },
+  {
+    kanji: '教師',
+    reading: 'kyōshi',
+    title: 'Profesores',
+    text: 'Cuentan con certificación oficial del idioma y enseñan japonés de una manera fácil y divertida.',
+  },
+]
+
+const year = new Date().getFullYear()
+---
+
+<Layout>
+  <Header />
+
+  <main id="contenido">
+    <!-- Inicio -->
+    <section data-hero class="relative overflow-hidden">
+      <div
+        class="mx-auto grid max-w-6xl items-center gap-12 px-6 pt-14 pb-20 md:grid-cols-[1.1fr_0.9fr] md:gap-16 md:pt-24 md:pb-32"
+      >
+        <div class="order-2 md:order-1">
+          <p data-hero-item class="text-sm font-medium tracking-wide text-gold">Ensenada, Baja California</p>
+          <h1
+            data-hero-item
+            class="mt-5 font-serif text-[2.6rem] leading-[1.1] font-medium tracking-tight text-balance text-ink sm:text-6xl"
+          >
+            Centro Cultural Japonés de Ensenada<span class="text-ink-soft">, A.C.</span>
+          </h1>
+          <p data-hero-item class="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
+            Asociación civil sin fines de lucro. Desde los años treinta reunimos a la comunidad japonesa de Ensenada, y
+            hoy abrimos nuestras puertas a todos con clases presenciales de japonés y eventos culturales.
+          </p>
+          <div data-hero-item class="mt-10 flex flex-wrap gap-3">
+            <SlideButton href={links.whatsapp} text="Pedir informes" hoverText="Escríbenos por WhatsApp" external />
+            <SlideButton href="#clases" text="Ver clases" hoverText="Niveles y horarios" variant="ghost" />
+          </div>
+        </div>
+
+        <div data-hero-emblem class="order-1 mx-auto w-44 sm:w-64 md:order-2 md:w-full md:max-w-md">
+          <Image
+            data-hero-emblem-img
+            src={emblema}
+            alt="Emblema del Centro Cultural Japonés de Ensenada"
+            widths={[240, 480, 720, 960]}
+            sizes="(min-width: 768px) 28rem, 18rem"
+            loading="eager"
+            fetchpriority="high"
+            class="h-auto w-full"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Proverbio -->
+    <section aria-labelledby="proverbio" class="border-y border-line bg-surface">
+      <div class="mx-auto flex max-w-6xl flex-col items-center gap-10 px-6 py-24 md:flex-row md:justify-center md:gap-24 md:py-32">
+        <h2 id="proverbio" class="sr-only">Proverbio japonés</h2>
+        <div lang="ja" class="font-serif text-6xl font-bold text-brand [writing-mode:vertical-rl] sm:text-7xl">
+          <BlurRevealText
+            client:visible
+            as="span"
+            text="晴耕雨読"
+            splitBy="characters"
+            stagger={0.18}
+            duration={0.8}
+            blurAmount="16px"
+            className="tracking-[0.25em]"
+          />
+        </div>
+        <figure data-reveal-group class="max-w-md text-center md:text-left">
+          <blockquote data-reveal class="font-serif text-3xl leading-snug text-ink sm:text-4xl">
+            Cultiva cuando esté soleado, lee cuando esté lloviendo.
+          </blockquote>
+          <figcaption data-reveal class="mt-6 text-ink-soft">
+            <span lang="ja-Latn">Seikō udoku</span> · Proverbio japonés
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Nosotros -->
+    <section id="nosotros" aria-labelledby="nosotros-titulo" class="mx-auto max-w-6xl px-6 py-24 md:py-32">
+      <div data-reveal-group class="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-16">
+        <h2 id="nosotros-titulo" data-reveal class="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+          Quiénes somos
+        </h2>
+        <div class="space-y-6 text-lg leading-relaxed text-ink-soft">
+          <p data-reveal class="font-serif text-2xl leading-snug text-ink sm:text-3xl">
+            Surgimos en los años treinta como una organización civil para que los japoneses y sus descendientes en
+            Ensenada pudieran apoyarse, tanto en lo económico como en lo moral.
+          </p>
+          <p data-reveal>
+            Hoy seguimos siendo una organización civil de la comunidad japonesa, pero con las puertas abiertas al
+            público: damos clases de japonés y apoyamos a la ciudad en eventos como La Suma de Culturas: Ensenada de
+            Todos.
+          </p>
+          <p data-reveal class="font-medium text-ink">¡Ven a conocernos!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Clases -->
+    <section id="clases" aria-labelledby="clases-titulo" class="border-t border-line bg-surface">
+      <div class="mx-auto max-w-6xl px-6 py-24 md:py-32">
+        <div data-reveal-group class="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-16">
+          <div>
+            <h2 id="clases-titulo" data-reveal class="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+              Aprende japonés
+            </h2>
+            <p data-reveal class="mt-6 text-lg leading-relaxed text-ink-soft">
+              Estudia los sistemas de escritura de Japón y aprende el idioma escribiendo y hablando. Todas las clases
+              son presenciales, en grupos pequeños.
+            </p>
+            <p data-reveal class="mt-4 leading-relaxed text-ink-soft">
+              Si eres de nuevo ingreso, empiezas en Básico 1. Si ya estudiaste japonés, presentas un examen de
+              ubicación sin costo y entras al nivel que dominas.
+            </p>
+          </div>
+
+          <div>
+            <ul class="divide-y divide-line border-y border-line">
+              {
+                courses.map((course) => (
+                  <li data-reveal class="grid gap-1 py-5 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-6">
+                    <p class="font-serif text-xl text-ink">{course.name}</p>
+                    <p class="text-ink-soft sm:text-right">
+                      {course.schedule}
+                      <span class="block text-sm">{course.length}</span>
+                    </p>
+                  </li>
+                ))
+              }
+            </ul>
+            <p data-reveal class="mt-5 text-sm text-ink-soft">Los libros se compran por separado.</p>
+            <div data-reveal class="mt-8 flex flex-wrap gap-3">
+              <SlideButton
+                href={links.whatsapp}
+                text="Pedir costos y horarios"
+                hoverText="Escríbenos por WhatsApp"
+                external
+              />
+              <SlideButton href={links.email} text="Escribir un correo" variant="ghost" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Actividades -->
+    <section id="actividades" aria-labelledby="actividades-titulo" class="mx-auto max-w-6xl px-6 py-24 md:py-32">
+      <div data-reveal-group class="max-w-2xl">
+        <h2 id="actividades-titulo" data-reveal class="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+          Más allá del idioma
+        </h2>
+        <p data-reveal class="mt-6 text-lg leading-relaxed text-ink-soft">
+          Para aprender una lengua también hay que conocer la cultura en la que vive. Por eso organizamos reuniones
+          culturales y eventos en los que los alumnos participan.
+        </p>
+      </div>
+
+      <ol data-reveal-group class="mt-16 grid gap-x-16 border-t border-line md:grid-cols-2">
+        {
+          activities.map((activity, index) => (
+            <li data-reveal class="flex gap-6 border-b border-line py-8">
+              <span aria-hidden="true" class="font-serif text-lg text-gold tabular-nums">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <h3 class="font-serif text-2xl text-ink">{activity.title}</h3>
+                <p class="mt-3 leading-relaxed text-ink-soft">{activity.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div data-reveal-group class="mt-16 flex flex-col items-start gap-8 sm:flex-row sm:items-center">
+        <p data-reveal class="max-w-xs text-ink-soft">Eventos culturales en los que participamos en Ensenada:</p>
+        <div data-reveal class="flex items-center gap-8">
+          <Image
+            src={noviembreCultural}
+            alt="Noviembre Cultural de Japón en Ensenada"
+            widths={[200, 400]}
+            sizes="10rem"
+            class="h-auto w-40"
+          />
+          <Image src={obonMatsuri} alt="Obon Matsuri Baja California" widths={[120, 240]} sizes="7rem" class="h-auto w-28" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Escuela -->
+    <section id="escuela" aria-labelledby="escuela-titulo" class="border-t border-line bg-surface">
+      <div class="mx-auto max-w-6xl px-6 py-24 md:py-32">
+        <h2 id="escuela-titulo" data-reveal class="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+          Nuestra escuela
+        </h2>
+        <ul data-reveal-group class="mt-16 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
+          {
+            school.map((item) => (
+              <li data-reveal class="bg-surface p-8 md:p-10">
+                <p lang="ja" class="font-serif text-4xl text-gold">
+                  {item.kanji}
+                </p>
+                <p lang="ja-Latn" class="mt-1 text-sm text-ink-soft">
+                  {item.reading}
+                </p>
+                <h3 class="mt-6 font-serif text-2xl text-ink">{item.title}</h3>
+                <p class="mt-3 leading-relaxed text-ink-soft">{item.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contacto" aria-labelledby="contacto-titulo" class="bg-ink text-white">
+      <div class="mx-auto grid max-w-6xl gap-14 px-6 py-24 md:grid-cols-[1.2fr_0.8fr] md:py-32">
+        <div data-reveal-group>
+          <h2 id="contacto-titulo" data-reveal class="font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+            Visítanos
+          </h2>
+          <address data-reveal class="mt-8 text-lg leading-relaxed text-white/80 not-italic">
+            {site.address.street}<br />
+            {site.address.neighborhood}<br />
+            {site.address.city}, {site.address.region}
+          </address>
+          <dl data-reveal class="mt-10 grid gap-6 sm:grid-cols-2">
+            <div>
+              <dt class="text-sm text-white/70">WhatsApp y teléfono</dt>
+              <dd class="mt-1">
+                <a href={links.tel} class="text-lg underline decoration-white/30 underline-offset-4 hover:decoration-white"
+                  >{site.phone.display}</a
+                >
+              </dd>
+            </div>
+            <div>
+              <dt class="text-sm text-white/70">Correo</dt>
+              <dd class="mt-1">
+                <a href={links.email} class="text-lg underline decoration-white/30 underline-offset-4 hover:decoration-white"
+                  >{site.email.split('@')[0]}<wbr />@{site.email.split('@')[1]}</a
+                >
+              </dd>
+            </div>
+          </dl>
+          <div data-reveal class="mt-10 flex flex-wrap gap-3">
+            <SlideButton href={links.whatsapp} text="Pedir informes" hoverText="Escríbenos por WhatsApp" variant="light" external />
+            <SlideButton href={links.maps} text="Cómo llegar" hoverText="Abrir en Google Maps" variant="brand" external />
+          </div>
+          <ul data-reveal class="mt-10 flex gap-6 text-white/80">
+            <li>
+              <a href={site.social.facebook} target="_blank" rel="noopener noreferrer" class="underline-offset-4 hover:text-white hover:underline"
+                >Facebook<span class="sr-only"> (se abre en otra pestaña)</span></a
+              >
+            </li>
+            <li>
+              <a href={site.social.youtube} target="_blank" rel="noopener noreferrer" class="underline-offset-4 hover:text-white hover:underline"
+                >YouTube<span class="sr-only"> (se abre en otra pestaña)</span></a
+              >
+            </li>
+          </ul>
+        </div>
+        <div data-reveal class="hidden items-center justify-center md:flex">
+          <Image src={emblemaBlanco} alt="" widths={[320, 640]} sizes="20rem" class="h-auto w-80 opacity-90" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-ink pb-28 text-white/70 md:pb-10">
+    <div
+      class="mx-auto flex max-w-6xl flex-col gap-2 border-t border-white/15 px-6 pt-8 text-sm sm:flex-row sm:justify-between"
+    >
+      <p>© {year} {site.legalName}</p>
+      <p>Asociación civil sin fines de lucro · Ensenada, Baja California, México</p>
+    </div>
+  </footer>
+
+  <MobileNav client:idle />
+</Layout>
+
+<script>
+  import '@/scripts/motion'
+</script>

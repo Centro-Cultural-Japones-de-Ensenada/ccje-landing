@@ -1,0 +1,51 @@
+---
+/**
+ * Botón "Slide Text" de Kokonut UI (MIT, https://kokonutui.com), pasado a Astro:
+ * solo usa CSS, así que no necesita React ni JavaScript en el navegador.
+ */
+import { cn } from '@/lib/utils'
+
+interface Props {
+  href: string
+  text: string
+  hoverText?: string
+  variant?: 'brand' | 'ink' | 'ghost' | 'light'
+  external?: boolean
+  class?: string
+}
+
+const { href, text, hoverText = text, variant = 'brand', external = false, class: className } = Astro.props
+
+const variants = {
+  brand: 'bg-brand text-white hover:bg-[#b80019]',
+  ink: 'bg-ink text-white hover:bg-[#353b42]',
+  ghost: 'border border-ink text-ink hover:bg-ink/5',
+  light: 'bg-white text-ink hover:bg-paper',
+}
+---
+
+<a
+  href={href}
+  {...external ? { target: '_blank', rel: 'noopener noreferrer' } : {}}
+  class={cn(
+    'group relative inline-flex min-h-12 items-center justify-center overflow-hidden rounded-full px-7 text-base font-medium tracking-tight',
+    'transition-[background-color,scale] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97] motion-reduce:active:scale-100',
+    variants[variant],
+    className,
+  )}
+>
+  <span
+    class="grid justify-items-center transition-transform duration-200 ease-[cubic-bezier(0.77,0,0.175,1)] group-hover:-translate-y-full group-focus-visible:-translate-y-full motion-reduce:transition-none"
+  >
+    <span
+      class="col-start-1 row-start-1 transition-opacity duration-200 group-hover:opacity-0 group-focus-visible:opacity-0"
+      >{text}</span
+    >
+    <span
+      aria-hidden="true"
+      class="col-start-1 row-start-1 translate-y-full opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+      >{hoverText}</span
+    >
+  </span>
+  {external && <span class="sr-only"> (se abre en otra pestaña)</span>}
+</a>
