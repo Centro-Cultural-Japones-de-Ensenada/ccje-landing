@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { ArrowUp, Menu, MessageCircle } from 'lucide-react'
+import { Home, Menu, MessageCircle } from 'lucide-react'
 import { ExpandableMobileNav, type ExpandableMobileNavEntry } from '@/components/ui/expandable-mobile-nav'
-import { links, sections } from '@/data/site'
+import { navigate } from 'astro:transitions/client'
+import { links, navPages } from '@/data/site'
 
 const linkClass =
   'flex min-h-11 items-center rounded-lg px-3 font-serif text-[17px] text-paper transition-colors hover:bg-white/10'
@@ -11,17 +12,17 @@ export default function MobileNav() {
   const close = () => setValue(null)
 
   const items: ExpandableMobileNavEntry[] = [
-    { id: 'inicio', label: 'Inicio', ariaLabel: 'Volver al inicio', icon: ArrowUp },
+    { id: 'inicio', label: 'Inicio', ariaLabel: 'Ir al inicio', icon: Home },
     {
       id: 'menu',
       label: 'Menú',
       icon: Menu,
       panelContent: (
         <ul className="p-2">
-          {sections.map((section) => (
-            <li key={section.id}>
-              <a href={`#${section.id}`} onClick={close} className={linkClass}>
-                {section.label}
+          {navPages.map((page) => (
+            <li key={page.href}>
+              <a href={page.href} onClick={close} className={linkClass}>
+                {page.label}
               </a>
             </li>
           ))}
@@ -59,10 +60,14 @@ export default function MobileNav() {
         value={value}
         onValueChange={(next) => {
           if (next === 'inicio') {
+            setValue(null)
+            if (location.pathname !== '/') {
+              navigate('/')
+              return
+            }
             const lenis = (window as Window & { __lenis?: { scrollTo: (target: number) => void } }).__lenis
             if (lenis) lenis.scrollTo(0)
             else window.scrollTo({ top: 0 })
-            setValue(null)
             return
           }
           setValue(next)

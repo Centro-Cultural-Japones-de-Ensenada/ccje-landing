@@ -1,0 +1,109 @@
+---
+/**
+ * Cortina de pantalla completa. Al cargar el sitio muestra los saludos (idea del "Words Preloader"
+ * de Space UI) y en cada cambio de página sube con el nombre de la página destino.
+ * Persiste entre páginas para que la animación no se corte.
+ */
+---
+
+<div
+  id="cortina"
+  data-curtain
+  transition:persist
+  aria-hidden="true"
+  class="curtain-intro pointer-events-none fixed inset-0 z-[80] overflow-hidden"
+>
+  <div data-curtain-panel class="absolute inset-x-0 top-0 h-full bg-ink will-change-transform">
+    <div class="absolute -top-[9vh] left-[-25%] h-[18vh] w-[150%] rounded-[50%] bg-ink"></div>
+    <div class="absolute -bottom-[9vh] left-[-25%] h-[18vh] w-[150%] rounded-[50%] bg-ink"></div>
+
+    <div data-curtain-label class="relative z-10 flex h-full flex-col items-center justify-center gap-5 px-6 text-center">
+      <p class="flex items-center gap-4 font-serif text-5xl text-paper md:text-7xl">
+        <span class="size-2 shrink-0 rounded-full bg-brand md:size-2.5"></span>
+        <span data-curtain-word lang="ja">こんにちは</span>
+      </p>
+      <p data-curtain-sub class="eyebrow min-h-[1em] text-paper/70"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { animate } from 'animejs'
+  import { pages } from '@/data/site'
+
+  const WORDS = ['こんにちは', 'Hola', 'ようこそ', 'Bienvenidos']
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  const curtain = document.querySelector<HTMLElement>('[data-curtain]')!
+  const panel = curtain.querySelector<HTMLElement>('[data-curtain-panel]')!
+  const word = curtain.querySelector<HTMLElement>('[data-curtain-word]')!
+  const sub = curtain.querySelector<HTMLElement>('[data-curtain-sub]')!
+
+  type CurtainWindow = Window & { __curtainCovering?: boolean; __curtainNav?: boolean }
+  const w = window as CurtainWindow
+
+  const run = (target: HTMLElement, params: Parameters<typeof animate>[1]) =>
+    new Promise<void>((resolve) => {
+      animate(target, { ...params, onComplete: () => resolve() })
+    })
+
+  const setWord = (text: string, subText = '') => {
+    word.textContent = text
+    word.lang = /[぀-ヿ一-龯]/.test(text) ? 'ja' : 'es'
+    sub.textContent = subText
+  }
+
+  async function lift() {
+    await run(panel, { y: ['0%', '-118%'], duration: 950, ease: 'inOutQuart' })
+    curtain.style.visibility = 'hidden'
+    w.__curtainCovering = false
+    window.dispatchEvent(new Event('curtain:out'))
+  }
+
+  async function drop(label: string, reading: string) {
+    curtain.style.visibility = 'visible'
+    w.__curtainCovering = true
+    w.__curtainNav = true
+    setWord(label, reading)
+    await run(panel, { y: ['118%', '0%'], duration: 750, ease: 'inOutQuart' })
+  }
+
+  // Intro: la cortina ya viene cubriendo la página desde el HTML.
+  curtain.classList.remove('curtain-intro')
+  if (reduceMotion) {
+    curtain.style.visibility = 'hidden'
+    w.__curtainCovering = false
+  } else {
+    w.__curtainCovering = true
+    let i = 0
+    const next = () => {
+      i += 1
+      if (i < WORDS.length) {
+        setWord(WORDS[i])
+        animate(word, { opacity: [0, 1], y: [8, 0], duration: 350, ease: 'outQuad' })
+        window.setTimeout(next, 320)
+      } else {
+        window.setTimeout(lift, 380)
+      }
+    }
+    window.setTimeout(next, 900)
+  }
+
+  // Cambio de página: la cortina sube con el nombre del destino mientras carga la página nueva.
+  document.addEventListener('astro:before-preparation', (event) => {
+    if (reduceMotion) return
+    const path = event.to.pathname.replace(/\/+$/, '') || '/'
+    const page = pages.find((p) => p.href === path)
+    const original = event.loader
+    event.loader = async () => {
+      await Promise.all([drop(page?.kanji ?? '日本', page ? `${page.label} · ${page.reading}` : ''), original()])
+    }
+  })
+
+  // Ya cargada la página nueva, la cortina se retira para mostrarla.
+  document.addEventListener('astro:page-load', () => {
+    if (!w.__curtainNav) return
+    w.__curtainNav = false
+    window.setTimeout(lift, 160)
+  })
+</script>

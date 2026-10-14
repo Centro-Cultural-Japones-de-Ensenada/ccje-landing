@@ -222,7 +222,7 @@ export default function BackgroundPaths({
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       frame.width = rect.width;
       frame.height = rect.height;
       canvas.width = Math.round(rect.width * dpr);

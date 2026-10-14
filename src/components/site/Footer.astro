@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets'
+import LiquidGlassSocial from './LiquidGlassSocial'
+import { links, navPages, site } from '@/data/site'
+import emblema from '@/assets/logos/emblema-blanco.png'
+
+const year = new Date().getFullYear()
+---
+
+<footer class="on-ink bg-ink text-paper">
+  <div class="mx-auto max-w-[90rem] px-6 pt-24 pb-28 md:px-10 md:pb-10">
+    <div class="grid gap-14 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <a href="/" class="inline-flex items-center gap-4" aria-label="Ir al inicio">
+          <Image src={emblema} alt="" widths={[64, 128]} sizes="56px" class="size-14" />
+          <span class="font-serif text-2xl leading-tight">{site.legalName}</span>
+        </a>
+        <p class="mt-6 max-w-sm leading-relaxed text-paper/75">
+          Asociación civil sin fines de lucro. Enseñamos el idioma japonés y compartimos su cultura en Ensenada.
+        </p>
+      </div>
+
+      <nav aria-label="Pie de página" class="md:col-span-3">
+        <h2 class="eyebrow text-paper/70">Páginas</h2>
+        <ul class="mt-5 space-y-2 font-serif text-xl">
+          {
+            navPages.map((page) => (
+              <li>
+                <a href={page.href} class="link-line">
+                  {page.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="md:col-span-4">
+        <h2 id="siguenos" class="eyebrow text-paper/70">Síguenos y escríbenos</h2>
+        <LiquidGlassSocial client:visible id="siguenos" className="mt-4 -ml-2" />
+        <address class="mt-6 leading-relaxed text-paper/75 not-italic">
+          {site.address.street}, {site.address.neighborhood}<br />
+          {site.address.city}, {site.address.region}<br />
+          <a href={links.tel} class="link-line">{site.phone.display}</a>
+        </address>
+      </div>
+    </div>
+
+    <div class="mt-20 flex flex-col gap-2 border-t border-white/15 pt-8 text-sm text-paper/70 md:flex-row md:justify-between">
+      <p>© {year} {site.legalName}</p>
+      <p>Ensenada, Baja California, México</p>
+    </div>
+  </div>
+</footer>

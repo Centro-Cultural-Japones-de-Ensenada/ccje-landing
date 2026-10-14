@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets'
+import Layout from '@/layouts/Layout.astro'
+import PageHero from '@/components/site/PageHero.astro'
+import NextPage from '@/components/site/NextPage.astro'
+import SlideButton from '@/components/site/SlideButton.astro'
+import LiquidGlassSocial from '@/components/site/LiquidGlassSocial'
+import { links, site } from '@/data/site'
+import emblema from '@/assets/logos/emblema.png'
+---
+
+<Layout title="Contacto" description="Dirección, teléfono, WhatsApp, correo y redes del Centro Cultural Japonés de Ensenada, A.C.">
+  <PageHero href="/contacto" title="Visítanos" intro="Escríbenos para pedir informes de clases, costos y horarios, o pasa a conocernos." />
+
+  <section aria-label="Datos de contacto" class="on-ink relative overflow-hidden bg-ink px-6 py-24 text-paper md:px-10 md:py-32">
+    <div aria-hidden="true" class="pointer-events-none absolute -right-[20vw] -bottom-[25vw] w-[70vw] opacity-[0.07] md:-right-[10vw]">
+      <Image data-spin src={emblema} alt="" widths={[640, 1280]} sizes="70vw" class="h-auto w-full" />
+    </div>
+
+    <div class="relative mx-auto max-w-[90rem]">
+      <div data-reveal-group class="grid gap-14 md:grid-cols-3">
+        <div data-reveal>
+          <h2 class="eyebrow text-paper/75">Dirección</h2>
+          <address class="mt-5 font-serif text-3xl leading-snug not-italic">
+            {site.address.street}<br />
+            {site.address.neighborhood}<br />
+            {site.address.city}, {site.address.region}
+          </address>
+          <a href={links.maps} target="_blank" rel="noopener noreferrer" class="link-line mt-6 inline-block text-paper/85"
+            >Cómo llegar<span class="sr-only"> (se abre en otra pestaña)</span></a
+          >
+        </div>
+        <div data-reveal>
+          <h2 class="eyebrow text-paper/75">Teléfono y WhatsApp</h2>
+          <p class="mt-5 font-serif text-3xl"><a href={links.tel} class="link-line">{site.phone.display}</a></p>
+          <h2 class="eyebrow mt-10 text-paper/75">Correo</h2>
+          <p class="mt-5 font-serif text-xl">
+            <a href={links.email} class="link-line">{site.email.split('@')[0]}<wbr />@{site.email.split('@')[1]}</a>
+          </p>
+        </div>
+        <div data-reveal>
+          <h2 id="contacto-redes" class="eyebrow text-paper/75">Síguenos</h2>
+          <LiquidGlassSocial client:visible id="contacto-redes" className="mt-4 -ml-2" />
+          <p class="mt-6 max-w-xs leading-relaxed text-paper/75">Facebook, YouTube, WhatsApp y correo.</p>
+        </div>
+      </div>
+
+      <div data-reveal class="mt-20 border-t border-white/15 pt-12">
+        <SlideButton href={links.whatsapp} text="Pedir informes" hoverText="Abrir WhatsApp" variant="light" external class="min-h-16 px-10 text-lg" />
+      </div>
+    </div>
+  </section>
+
+  <NextPage href="/contacto" />
+</Layout>

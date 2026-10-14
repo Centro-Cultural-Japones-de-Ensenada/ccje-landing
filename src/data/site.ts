@@ -33,10 +33,27 @@ export const links = {
   )}`,
 }
 
-export const sections = [
-  { id: 'nosotros', label: 'Nosotros' },
-  { id: 'clases', label: 'Clases' },
-  { id: 'actividades', label: 'Actividades' },
-  { id: 'escuela', label: 'Escuela' },
-  { id: 'contacto', label: 'Contacto' },
+// Páginas del sitio. El kanji y su lectura aparecen en la cortina al cambiar de página.
+export const pages = [
+  { href: '/', label: 'Inicio', kanji: 'ようこそ', reading: 'Yōkoso' },
+  { href: '/nosotros', label: 'Nosotros', kanji: '私たち', reading: 'Watashitachi' },
+  { href: '/clases', label: 'Clases', kanji: '授業', reading: 'Jugyō' },
+  { href: '/actividades', label: 'Actividades', kanji: '活動', reading: 'Katsudō' },
+  { href: '/escuela', label: 'Escuela', kanji: '学校', reading: 'Gakkō' },
+  { href: '/contacto', label: 'Contacto', kanji: '連絡', reading: 'Renraku' },
 ] as const
+
+export type SitePage = (typeof pages)[number]
+
+/** Páginas del menú (todas menos Inicio). */
+export const navPages = pages.slice(1)
+
+export function pageFor(href: string) {
+  return pages.find((page) => page.href === href) ?? pages[0]
+}
+
+/** La página que sigue, para el enlace grande al final de cada página. */
+export function nextPage(href: string) {
+  const index = pages.findIndex((page) => page.href === href)
+  return pages[(index + 1) % pages.length]
+}

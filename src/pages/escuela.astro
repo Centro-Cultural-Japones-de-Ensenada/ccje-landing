@@ -1,0 +1,77 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import PageHero from '@/components/site/PageHero.astro'
+import NextPage from '@/components/site/NextPage.astro'
+
+const school = [
+  {
+    kanji: '学校',
+    reading: 'Gakkō',
+    title: 'Escuela',
+    text: 'Dos salones de clase, baños con lavamanos separados, un acervo bibliográfico y un área al aire libre con bancas para descansar.',
+  },
+  {
+    kanji: '生徒',
+    reading: 'Seito',
+    title: 'Estudiantes',
+    text: 'Practican escritura y pronunciación en clase y con sus compañeros, en grupos pequeños y con enseñanza personalizada.',
+  },
+  {
+    kanji: '図書館',
+    reading: 'Toshokan',
+    title: 'Biblioteca',
+    text: 'Una hemeroteca con revistas, libros, manga, videos y juegos didácticos para alumnos y profesores.',
+  },
+  {
+    kanji: '教師',
+    reading: 'Kyōshi',
+    title: 'Profesores',
+    text: 'Con certificación oficial del idioma, enseñan japonés de una manera fácil y divertida.',
+  },
+]
+
+const marquee = '日本語学校　学校　生徒　図書館　教師　文化　'
+---
+
+<Layout title="Escuela" description="Salones, biblioteca y profesores certificados en el Centro Cultural Japonés de Ensenada.">
+  <PageHero
+    href="/escuela"
+    title={'Un lugar\npara aprender'}
+    intro="Nuestra sede en la Colonia Obrera tiene todo lo necesario para estudiar japonés con calma y en buena compañía."
+  />
+
+  <div aria-hidden="true" class="overflow-hidden py-10">
+    <p data-marquee lang="ja" class="kanji-outline font-serif text-[clamp(6rem,15vw,15rem)] leading-none whitespace-nowrap">
+      {marquee}{marquee}{marquee}
+    </p>
+  </div>
+
+  <section aria-label="Instalaciones y personas" class="px-6 py-24 md:px-10 md:py-32">
+    <ul data-reveal-group class="mx-auto grid max-w-[90rem] border-t border-ink/15 sm:grid-cols-2">
+      {
+        school.map((item, index) => (
+          <li
+            data-reveal
+            class:list={[
+              'border-b border-ink/15 py-12 sm:px-10',
+              index % 2 === 0 ? 'sm:border-r sm:pl-0' : 'sm:pr-0',
+            ]}
+          >
+            <div class="flex items-baseline justify-between gap-6">
+              <p lang="ja" aria-hidden="true" class="font-serif text-7xl leading-none text-gold md:text-8xl">
+                {item.kanji}
+              </p>
+              <p lang="ja-Latn" class="eyebrow text-ink-soft">
+                {item.reading}
+              </p>
+            </div>
+            <h2 class="mt-10 font-serif text-4xl">{item.title}</h2>
+            <p class="mt-4 max-w-md text-lg leading-relaxed text-ink-soft">{item.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <NextPage href="/escuela" />
+</Layout>

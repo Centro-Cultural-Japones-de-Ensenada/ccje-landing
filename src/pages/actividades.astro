@@ -1,0 +1,123 @@
+---
+import { Image } from 'astro:assets'
+import Layout from '@/layouts/Layout.astro'
+import PageHero from '@/components/site/PageHero.astro'
+import NextPage from '@/components/site/NextPage.astro'
+import StackedCards from '@/components/site/StackedCards'
+import danza from '@/assets/fotos/danza-sombrilla.jpg'
+import kabuki from '@/assets/fotos/kabuki-shishi.jpg'
+import oni from '@/assets/fotos/mascaras-oni.jpg'
+import obon from '@/assets/fotos/obon-matsuri-2026.jpg'
+import noviembreCultural from '@/assets/logos/noviembre-cultural.png'
+
+const activities = [
+  {
+    kanji: '言語',
+    reading: 'Gengo',
+    title: 'Idioma japonés',
+    text: 'Hiragana, katakana y kanji; caligrafía con tinta y papel de arroz, y lo curioso del idioma: el goroawase, las onomatopeyas, los refranes y los modismos.',
+  },
+  {
+    kanji: '文化',
+    reading: 'Bunka',
+    title: 'Club cultural',
+    text: 'Reuniones abiertas a alumnos y público sobre historia, anime y manga, comida y juegos tradicionales, cine y más.',
+  },
+  {
+    kanji: '修了',
+    reading: 'Shūryō',
+    title: 'Entrega de constancias',
+    text: 'Al cerrar el semestre, cada grupo presenta en público lo que aprendió: ensayos, presentaciones, canciones o sketches que los mismos alumnos eligen.',
+  },
+  {
+    kanji: '祭り',
+    reading: 'Matsuri',
+    title: 'Eventos',
+    text: 'Apoyamos La Suma de Culturas: Ensenada de Todos, el Mochitsuki, el Hinamatsuri, el Kodomo no Hi y convenciones de anime y manga.',
+  },
+]
+---
+
+<Layout title="Actividades" description="Club cultural, entrega de constancias y festivales como el Obon Matsuri y el Noviembre Cultural de Japón en Ensenada.">
+  <PageHero
+    href="/actividades"
+    title={'Más allá\ndel idioma'}
+    intro="Para aprender una lengua también hay que conocer la cultura en la que vive. Por eso organizamos reuniones culturales y eventos en los que participan los alumnos."
+  />
+
+  <section aria-labelledby="lista-actividades" class="bg-paper-deep px-6 py-24 md:px-10 md:py-32">
+    <h2 id="lista-actividades" class="sr-only">Nuestras actividades</h2>
+    <StackedCards client:visible cards={activities} className="md:mx-auto md:max-w-5xl" />
+  </section>
+
+  <!-- Galería -->
+  <section aria-labelledby="galeria-titulo" class="px-6 py-32 md:px-10 md:py-44">
+    <div class="mx-auto max-w-[90rem]">
+      <div data-reveal-group class="grid gap-10 md:grid-cols-12">
+        <p data-reveal class="eyebrow text-gold-strong md:col-span-3 md:pt-4">Galería</p>
+        <h2 id="galeria-titulo" data-reveal class="font-serif text-[clamp(2.6rem,5.4vw,5.5rem)] leading-[1] tracking-[-0.03em] md:col-span-9">
+          Escenas de nuestros eventos
+        </h2>
+      </div>
+
+      <div data-reveal-group class="mt-20 grid gap-4 md:grid-cols-12 md:gap-6">
+        <figure data-reveal class="relative overflow-hidden md:col-span-7 md:row-span-2">
+          <Image
+            src={danza}
+            alt="Bailarina con kimono y sombrilla roja ante el público"
+            widths={[640, 1024, 1400]}
+            sizes="(min-width: 768px) 58vw, 100vw"
+            class="h-full w-full object-cover transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] hover:scale-[1.03]"
+          />
+        </figure>
+        <figure data-reveal class="relative overflow-hidden md:col-span-5">
+          <Image
+            src={kabuki}
+            alt="Intérprete de kabuki con melena blanca y kimono naranja"
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 768px) 40vw, 100vw"
+            class="aspect-[3/2] h-full w-full object-cover transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] hover:scale-[1.03]"
+          />
+        </figure>
+        <figure data-reveal class="relative overflow-hidden md:col-span-5">
+          <Image
+            src={oni}
+            alt="Máscaras rojas de oni entre hojas verdes"
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 768px) 40vw, 100vw"
+            class="aspect-[3/2] h-full w-full object-cover object-[50%_35%] transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] hover:scale-[1.03]"
+          />
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Eventos -->
+  <section aria-labelledby="eventos-titulo" class="on-ink bg-ink px-6 py-32 text-paper md:px-10 md:py-44">
+    <div class="mx-auto grid max-w-[90rem] items-center gap-14 md:grid-cols-12">
+      <div data-reveal-group class="md:col-span-5">
+        <p data-reveal class="eyebrow text-paper/75">Próximo evento</p>
+        <h2 id="eventos-titulo" data-reveal class="mt-6 font-serif text-[clamp(2.8rem,5.6vw,5.5rem)] leading-[0.98] tracking-[-0.03em]">
+          Obon Matsuri<br />Baja California
+        </h2>
+        <p data-reveal class="mt-8 text-lg leading-relaxed text-paper/80">
+          Noviembre de 2026, dentro del Noviembre Cultural de Japón en Ensenada.
+        </p>
+        <div data-reveal class="mt-10 flex items-center gap-6">
+          <Image src={noviembreCultural} alt="Noviembre Cultural de Japón en Ensenada" widths={[160, 320]} sizes="8rem" class="h-auto w-32" />
+        </div>
+      </div>
+      <figure data-reveal class="overflow-hidden md:col-span-7">
+        <Image
+          src={obon}
+          alt="Cartel del Obon Matsuri Baja California, noviembre de 2026"
+          widths={[640, 1080]}
+          sizes="(min-width: 768px) 58vw, 100vw"
+          class="h-auto w-full"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <NextPage href="/actividades" />
+</Layout>

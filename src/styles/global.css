@@ -37,8 +37,10 @@
     scroll-padding-top: 6rem;
   }
 
+  /* Grano de papel como fondo fijo del body: no crea capas ni mezcla al hacer scroll. */
   body {
-    background: var(--color-paper);
+    background-color: var(--color-paper);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.09 0 0 0 0 0.08 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -94,17 +96,6 @@
   }
 }
 
-/* Grano de papel sobre toda la página. */
-.grain {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 70;
-  opacity: 0.07;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
 /* Lo que anime.js revela. Sin JS o con movimiento reducido queda visible. */
 .js-motion :is([data-reveal], [data-hero-fade], [data-hero-emblem]) {
   opacity: 0;
@@ -114,9 +105,18 @@
   transform: translateY(105%);
 }
 
-/* La intro se quita sola aunque falle el JS. */
-[data-intro] {
+/* Sin JS la cortina de la intro se quita sola. El script quita esta clase al tomar el control. */
+.curtain-intro {
   animation: intro-failsafe 0s linear 4s forwards;
+}
+
+/* Revelado del manifiesto: una sola variable --p por bloque; cada palabra calcula su color. */
+.str-token {
+  color: color-mix(
+    in oklab,
+    var(--str-to) calc(clamp(0, (var(--p, 0) * var(--n) - var(--i)) / 1.5, 1) * 100%),
+    var(--str-from)
+  );
 }
 
 @keyframes slide {
@@ -143,7 +143,12 @@
     transform: none;
   }
 
-  [data-intro] {
+  .curtain-intro,
+  [data-curtain] {
     display: none;
+  }
+
+  .str-token {
+    color: var(--str-to);
   }
 }

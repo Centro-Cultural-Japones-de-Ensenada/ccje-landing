@@ -1,29 +1,37 @@
 ---
 import { Image } from 'astro:assets'
-import { links, sections } from '@/data/site'
+import { links, navPages } from '@/data/site'
 import emblema from '@/assets/logos/emblema.png'
+
+const current = Astro.url.pathname.replace(/\/+$/, '') || '/'
 ---
 
 <header
   data-header
+  transition:persist
   class="fixed inset-x-0 top-0 z-40 border-b border-transparent transition-[background-color,border-color] duration-500 data-[scrolled]:border-ink/10 data-[scrolled]:bg-paper"
 >
   <div class="mx-auto flex h-20 max-w-[90rem] items-center justify-between gap-6 px-6 md:px-10">
-    <a href="#" class="flex items-center gap-3" aria-label="Centro Cultural Japonés de Ensenada, A.C., ir al inicio">
+    <a href="/" class="flex items-center gap-3" aria-label="Centro Cultural Japonés de Ensenada, A.C., ir al inicio">
       <Image src={emblema} alt="" widths={[40, 80]} sizes="36px" class="size-9" loading="eager" />
       <span class="font-serif text-[14px] leading-[1.25] text-ink">
         Centro Cultural Japonés<br />de Ensenada, A.C.
       </span>
     </a>
 
-    <nav aria-label="Secciones" class="hidden lg:block">
+    <nav aria-label="Principal" class="hidden lg:block">
       <ul class="flex items-center gap-9 text-[14px] text-ink">
         {
-          sections.map((section) => (
+          navPages.map((page) => (
             <li>
-              <a href={`#${section.id}`} class="group relative py-2">
-                {section.label}
-                <span class="absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-ink transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100" />
+              <a
+                href={page.href}
+                data-nav-link
+                aria-current={current === page.href ? 'page' : undefined}
+                class="group relative py-2"
+              >
+                {page.label}
+                <span class="absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-ink transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100 group-aria-[current=page]:scale-x-100" />
               </a>
             </li>
           ))
@@ -46,6 +54,15 @@ import emblema from '@/assets/logos/emblema.png'
 <script>
   const header = document.querySelector<HTMLElement>('[data-header]')
   const update = () => header?.toggleAttribute('data-scrolled', window.scrollY > 24)
-  update()
   window.addEventListener('scroll', update, { passive: true })
+
+  // El encabezado persiste entre páginas, así que la página activa se marca en cada carga.
+  document.addEventListener('astro:page-load', () => {
+    update()
+    const path = location.pathname.replace(/\/+$/, '') || '/'
+    document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]').forEach((link) => {
+      if (link.getAttribute('href') === path) link.setAttribute('aria-current', 'page')
+      else link.removeAttribute('aria-current')
+    })
+  })
 </script>

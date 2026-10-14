@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets'
+import Layout from '@/layouts/Layout.astro'
+import PageHero from '@/components/site/PageHero.astro'
+import NextPage from '@/components/site/NextPage.astro'
+import { ScrollTextReveal } from '@/components/spaceui/scroll-text-reveal'
+import kabuki from '@/assets/fotos/kabuki-shishi.jpg'
+---
+
+<Layout title="Nosotros" description="Desde los años treinta, el Centro Cultural Japonés de Ensenada reúne a la comunidad japonesa y comparte su cultura con todos.">
+  <PageHero
+    href="/nosotros"
+    title={'Quiénes\nsomos'}
+    intro="Una asociación civil sin fines de lucro que nació en los años treinta y hoy abre sus puertas a todo Ensenada."
+  />
+
+  <section aria-label="Nuestra historia" class="px-6 pb-32 md:px-10 md:pb-44">
+    <div class="mx-auto grid max-w-[90rem] gap-10 md:grid-cols-12">
+      <p class="eyebrow text-gold-strong md:col-span-3 md:pt-4">Historia</p>
+      <div class="md:col-span-9">
+        <ScrollTextReveal
+          client:visible
+          as="p"
+          fromColor="#8a8174"
+          toColor="#1a1814"
+          offset={['start 0.85', 'end 0.5']}
+          className="font-serif text-[clamp(1.85rem,4.3vw,4.25rem)] leading-[1.12] tracking-[-0.02em]"
+          text="Desde los años treinta somos casa de la comunidad japonesa en Ensenada. Hoy abrimos nuestras puertas a todos para enseñar el idioma y compartir la cultura de Japón."
+        />
+        <div data-reveal-group class="mt-20 grid max-w-4xl gap-10 text-lg leading-relaxed text-ink-soft md:grid-cols-2">
+          <p data-reveal>
+            Nacimos como una organización civil para que los japoneses y sus descendientes pudieran apoyarse, tanto en lo
+            económico como en lo moral.
+          </p>
+          <p data-reveal>
+            Seguimos siendo una organización de la comunidad japonesa, pero con las puertas abiertas al público: damos
+            clases de japonés y apoyamos a la ciudad en eventos como La Suma de Culturas: Ensenada de Todos.{' '}
+            <span class="text-ink">¡Ven a conocernos!</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <figure class="relative h-[70svh] overflow-hidden md:h-[90svh]">
+    <Image
+      data-parallax
+      src={kabuki}
+      alt="Intérprete con traje de kabuki y melena blanca durante una presentación del Centro"
+      widths={[640, 1024, 1600, 2048]}
+      sizes="100vw"
+      class="absolute inset-x-0 -top-[8%] h-[116%] w-full object-cover"
+    />
+    <figcaption class="absolute right-6 bottom-6 left-6 flex justify-between text-sm text-white md:right-10 md:left-10">
+      <span class="rounded-full bg-ink/60 px-3 py-1">Presentación de kabuki</span>
+      <span lang="ja" aria-hidden="true" class="rounded-full bg-ink/60 px-3 py-1 font-serif">歌舞伎</span>
+    </figcaption>
+  </figure>
+
+  <section aria-labelledby="valores-titulo" class="px-6 py-32 md:px-10 md:py-44">
+    <div class="mx-auto max-w-[90rem]">
+      <div data-reveal-group class="grid gap-10 md:grid-cols-12">
+        <p data-reveal class="eyebrow text-gold-strong md:col-span-3 md:pt-4">Lo que hacemos</p>
+        <h2 id="valores-titulo" data-reveal class="font-serif text-[clamp(2.6rem,5.4vw,5.5rem)] leading-[1] tracking-[-0.03em] md:col-span-9">
+          Idioma, cultura y comunidad
+        </h2>
+      </div>
+      <ul data-reveal-group class="mt-20 grid border-t border-ink/15 md:grid-cols-3">
+        <li data-reveal class="border-b border-ink/15 py-10 md:border-b-0 md:pr-10">
+          <p lang="ja" aria-hidden="true" class="font-serif text-6xl leading-none text-gold">言葉</p>
+          <h3 class="mt-8 font-serif text-3xl">Idioma</h3>
+          <p class="mt-4 leading-relaxed text-ink-soft">Clases presenciales de japonés para principiantes y para quienes ya lo estudiaron, más un curso de kanji.</p>
+        </li>
+        <li data-reveal class="border-b border-ink/15 py-10 md:border-b-0 md:border-l md:px-10">
+          <p lang="ja" aria-hidden="true" class="font-serif text-6xl leading-none text-gold">文化</p>
+          <h3 class="mt-8 font-serif text-3xl">Cultura</h3>
+          <p class="mt-4 leading-relaxed text-ink-soft">Club cultural, festivales y presentaciones abiertas al público.</p>
+        </li>
+        <li data-reveal class="py-10 md:border-l md:pl-10">
+          <p lang="ja" aria-hidden="true" class="font-serif text-6xl leading-none text-gold">仲間</p>
+          <h3 class="mt-8 font-serif text-3xl">Comunidad</h3>
+          <p class="mt-4 leading-relaxed text-ink-soft">Un punto de encuentro para la comunidad japonesa y para Ensenada.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <NextPage href="/nosotros" />
+</Layout>

@@ -1,0 +1,41 @@
+---
+import { pageFor } from '@/data/site'
+
+interface Props {
+  href: string
+  title: string
+  intro?: string
+}
+
+const { href, title, intro } = Astro.props
+const page = pageFor(href)
+const lines = title.split('\n')
+---
+
+<section class="relative px-6 pt-36 pb-20 md:px-10 md:pt-44 md:pb-28">
+  <div class="mx-auto grid max-w-[90rem] gap-10 md:grid-cols-12">
+    <div class="md:col-span-9">
+      <p data-hero-fade class="eyebrow text-gold-strong">{page.label}</p>
+      <h1
+        class="mt-6 font-serif text-[clamp(3.2rem,9vw,9.5rem)] leading-[0.95] font-normal tracking-[-0.035em] text-ink"
+      >
+        {
+          lines.map((line) => (
+            <span class="block overflow-hidden pb-[0.06em]">
+              <span data-line class="block">
+                {line}
+              </span>
+            </span>
+          ))
+        }
+      </h1>
+      {intro && <p data-hero-fade class="mt-10 max-w-2xl text-lg leading-relaxed text-ink-soft md:text-xl">{intro}</p>}
+    </div>
+    <div class="hidden justify-end md:col-span-3 md:flex">
+      <p data-hero-fade class="flex gap-4 [writing-mode:vertical-rl]">
+        <span lang="ja" class="font-serif text-5xl tracking-[0.3em] text-brand">{page.kanji}</span>
+        <span lang="ja-Latn" class="eyebrow text-ink-soft">{page.reading}</span>
+      </p>
+    </div>
+  </div>
+</section>
