@@ -3,17 +3,26 @@ import { Image } from 'astro:assets'
 import Layout from '@/layouts/Layout.astro'
 import BackgroundPaths from '@/components/kokonutui/background-paths'
 import { BlurRevealText } from '@/components/spaceui/blur-reveal-text'
+import StackedCards from '@/components/site/StackedCards'
 import { navPages } from '@/data/site'
 import emblema from '@/assets/logos/emblema.png'
 import danza from '@/assets/fotos/danza-sombrilla.jpg'
 
 const chapters: Record<string, string> = {
-  '/nosotros': 'Nuestra historia desde los años treinta.',
-  '/clases': 'Niveles, horarios y examen de ubicación.',
-  '/actividades': 'Club cultural, constancias y festivales.',
-  '/escuela': 'Salones, biblioteca y profesores.',
-  '/contacto': 'Dirección, WhatsApp y redes.',
+  '/nosotros': 'Nuestra historia desde los años treinta y lo que hacemos hoy.',
+  '/clases': 'Niveles, horarios y examen de ubicación sin costo.',
+  '/actividades': 'Club cultural, entrega de constancias y festivales.',
+  '/escuela': 'Salones, biblioteca y profesores certificados.',
+  '/contacto': 'Dirección, WhatsApp, correo y redes.',
 }
+
+const exploreCards = navPages.map((page) => ({
+  kanji: page.kanji,
+  reading: page.reading,
+  title: page.label,
+  text: chapters[page.href],
+  href: page.href,
+}))
 ---
 
 <Layout>
@@ -117,7 +126,7 @@ const chapters: Record<string, string> = {
   </section>
 
   <!-- Capítulos -->
-  <section aria-labelledby="explora-titulo" class="px-6 py-32 md:px-10 md:py-44">
+  <section aria-labelledby="explora-titulo" class="bg-paper-deep px-6 pt-32 pb-24 md:px-10 md:pt-44">
     <div class="mx-auto max-w-[90rem]">
       <div data-reveal-group class="grid gap-10 md:grid-cols-12">
         <p data-reveal class="eyebrow text-gold-strong md:col-span-3 md:pt-4">Explora</p>
@@ -126,33 +135,7 @@ const chapters: Record<string, string> = {
         </h2>
       </div>
 
-      <ol data-reveal-group class="mt-20 border-t border-ink/15">
-        {
-          navPages.map((page, index) => (
-            <li data-reveal>
-              <a
-                href={page.href}
-                class="group relative grid grid-cols-[2.5rem_1fr_auto] items-center gap-x-4 border-b border-ink/15 py-8 md:grid-cols-[4rem_1fr_1fr_auto] md:py-10"
-              >
-                <span aria-hidden="true" class="font-serif text-gold-strong tabular-nums">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <span class="font-serif text-[clamp(2.2rem,5vw,4.5rem)] leading-none tracking-[-0.02em] transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:translate-x-3">
-                  {page.label}
-                </span>
-                <span class="hidden text-ink-soft md:block">{chapters[page.href]}</span>
-                <span lang="ja" aria-hidden="true" class="font-serif text-3xl text-brand md:text-4xl">
-                  {page.kanji}
-                </span>
-                <span
-                  aria-hidden="true"
-                  class="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-brand transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-x-100"
-                />
-              </a>
-            </li>
-          ))
-        }
-      </ol>
+      <StackedCards client:visible cards={exploreCards} className="mt-24 md:mx-auto md:max-w-5xl" />
     </div>
   </section>
 </Layout>

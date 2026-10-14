@@ -5,20 +5,22 @@ import { cn } from '@/lib/utils'
 /**
  * Tarjetas que se apilan al hacer scroll, adaptadas de "Sticky Scroll Cards" de Componentry
  * (https://componentry.dev). Aquí llevan texto en lugar de fotos, y el scroll suave lo pone Lenis
- * para toda la página.
+ * para toda la página. Si una tarjeta trae `href`, toda la tarjeta es un enlace.
  */
 export interface StackedCard {
   kanji: string
   reading: string
   title: string
   text: string
+  href?: string
 }
 
 const TONES = [
-  'bg-surface text-ink',
-  'bg-ink text-paper on-ink',
-  'bg-paper-deep text-ink',
-  'bg-brand text-white on-ink',
+  { card: 'bg-surface text-ink', muted: 'text-ink-soft', accent: 'text-gold-strong' },
+  { card: 'bg-ink text-paper on-ink', muted: 'text-white/80', accent: 'text-white/80' },
+  { card: 'bg-paper-deep text-ink', muted: 'text-ink-soft', accent: 'text-gold-strong' },
+  // Sobre rojo el texto va en blanco puro para mantener 4.5:1.
+  { card: 'bg-brand text-white on-ink', muted: 'text-white', accent: 'text-white' },
 ]
 
 function Card({
@@ -37,36 +39,52 @@ function Card({
   const start = index / total
   const restingScale = 1 - (total - index - 1) * 0.04
   const scale = useTransform(progress, [start, 1], reduceMotion ? [1, 1] : [1, restingScale])
-  // Sobre rojo el texto va en blanco puro para mantener 4.5:1.
-  const muted = index === 3 ? 'text-white' : index % 2 === 1 ? 'text-white/80' : null
+  const tone = TONES[index % TONES.length]
+
+  const content = (
+    <>
+      <div className="flex items-start justify-between md:flex-col">
+        <span className={cn('eyebrow whitespace-nowrap', tone.accent)}>
+          {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+        </span>
+        <p lang="ja" aria-hidden="true" className="font-serif text-[3.75rem] leading-none whitespace-nowrap opacity-90 sm:text-[5.5rem] md:text-[9rem]">
+          {card.kanji}
+        </p>
+      </div>
+      <div className="mt-10 flex flex-col justify-end md:mt-0">
+        <p lang="ja-Latn" className={cn('eyebrow', tone.muted)}>
+          {card.reading}
+        </p>
+        <h3 className="mt-4 font-serif text-4xl leading-tight md:text-5xl">{card.title}</h3>
+        <p className={cn('mt-5 max-w-md text-lg leading-relaxed', tone.muted)}>{card.text}</p>
+        {card.href ? (
+          <span className="mt-8 inline-flex items-center gap-4 text-[15px]">
+            Ver página
+            <span className="relative block h-px w-12 overflow-hidden bg-current/30">
+              <span className="absolute inset-0 origin-left scale-x-0 bg-current transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-x-100" />
+            </span>
+          </span>
+        ) : null}
+      </div>
+    </>
+  )
+
+  const className = cn(
+    'group relative grid min-h-[62vh] origin-top overflow-hidden rounded-[2px] p-8 shadow-[0_30px_80px_-30px_rgb(26_24_20/0.45)] md:grid-cols-[1fr_1.1fr] md:p-14',
+    tone.card,
+  )
 
   return (
     <li className="sticky" style={{ top: `calc(14vh + ${index * 28}px)` }}>
-      <motion.article
-        style={{ scale }}
-        className={cn(
-          'relative grid min-h-[62vh] origin-top overflow-hidden rounded-[2px] p-8 shadow-[0_30px_80px_-30px_rgb(26_24_20/0.45)] md:grid-cols-[1fr_1.1fr] md:p-14',
-          TONES[index % TONES.length],
-        )}
-      >
-        <div className="flex items-start justify-between md:flex-col">
-          <span className={cn('eyebrow', muted ?? 'text-gold-strong')}>
-            {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
-          </span>
-          <p lang="ja" aria-hidden="true" className="font-serif text-[5.5rem] leading-none opacity-90 md:text-[9rem]">
-            {card.kanji}
-          </p>
-        </div>
-        <div className="mt-10 flex flex-col justify-end md:mt-0">
-          <p lang="ja-Latn" className={cn('eyebrow', muted ?? 'text-ink-soft')}>
-            {card.reading}
-          </p>
-          <h3 className="mt-4 font-serif text-4xl leading-tight md:text-5xl">{card.title}</h3>
-          <p className={cn('mt-5 max-w-md text-lg leading-relaxed', muted ?? 'text-ink-soft')}>
-            {card.text}
-          </p>
-        </div>
-      </motion.article>
+      {card.href ? (
+        <motion.a href={card.href} style={{ scale }} className={className}>
+          {content}
+        </motion.a>
+      ) : (
+        <motion.article style={{ scale }} className={className}>
+          {content}
+        </motion.article>
+      )}
     </li>
   )
 }
